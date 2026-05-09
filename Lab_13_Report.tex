@@ -1,0 +1,244 @@
+\documentclass[11pt, a4paper]{article}
+
+% =====================
+% CORE GEOMETRY & ENGINE
+% =====================
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+
+% Use standard font encoding for wider compatibility
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Use a high-quality Sans Serif font (similar to Noto) that works on all engines
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% =====================
+% ADDITIONAL PACKAGES
+% =====================
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{array}
+\usepackage{float}
+
+% hyperref should almost always be loaded last to avoid conflicts
+\usepackage{hyperref}
+
+% =====================
+% COLORS
+% =====================
+\definecolor{boxcyan}{RGB}{0,255,255}
+
+% =====================
+% CODE LISTING STYLE
+% =====================
+\lstset{
+    language=JavaScript,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{gray},
+    breaklines=true,
+    frame=single,
+    showstringspaces=false
+}
+
+% =====================
+% SECTION FORMATTING
+% =====================
+\titleformat{\section}
+    {\normalfont\Large\bfseries}
+    {\thesection}{1em}{}
+    [{\titlerule[0.7pt]}]
+
+\titleformat{\subsection}
+    {\normalfont\large\bfseries}
+    {\thesubsection}{1em}{}
+
+\titlespacing*{\section}{0pt}{1.2em}{0.8em}
+\titlespacing*{\subsection}{0pt}{1em}{0.6em}
+
+% =====================
+% CUSTOM COMMANDS
+% =====================
+% Command for equal-height placeholders
+\newcommand{\imgplaceholder}[2]{%
+    \framebox{\parbox[c][#1][c]{#2}{\centering \textbf{Image Placeholder} \\ \small\textit{Screenshot Output}}}%
+}
+
+% =====================
+% DOCUMENT START
+% =====================
+\begin{document}
+
+% =========================================================
+% COVER PAGE
+% =========================================================
+\begin{titlepage}
+\centering
+
+\vspace*{0.5cm}
+{\Huge\textbf{BAHRIA UNIVERSITY}}\\[0.35cm]
+{\Large Department of Software Engineering}\\[1.2cm]
+
+% Logo placeholder
+\includegraphics[width=8cm]{Bahria Logo.jpg}\\[1.4cm]
+
+{\Huge\textbf{LAB JOURNAL: 13}}\\[0.6cm]
+{\Large\textbf{FULL-STACK E-COMMERCE WEB APPLICATION}}\\[1.8cm]
+
+\Large
+\begin{tabular}{rl}
+\textbf{Name:} & Talha Naveed \\[0.35cm]
+\textbf{Enrollment:} & 01-131232-089 \\[0.35cm]
+\textbf{Section:} & BSE-6A \\[0.35cm]
+\textbf{Instructor:} & Engr. Subas Bilal \\[0.35cm]
+\textbf{Repository:} &
+\fboxsep=4pt
+\fcolorbox{boxcyan}{white}{
+    \href{https://github.com/TALHA-089/WEB-LAB-13.git}{\textbf{Lab 13}}
+}
+\end{tabular}
+
+\vfill
+{\Large May 09, 2026}
+\end{titlepage}
+
+% =========================================================
+% PAGE STYLE
+% =========================================================
+\pagestyle{fancy}
+\fancyhf{}
+\cfoot{\thepage}
+\setcounter{page}{1}
+
+% =========================================================
+% GENERAL FORMATTING
+% =========================================================
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+% =========================================================
+% LAB CONTENT
+% =========================================================
+\section{Objective}
+The objective of this lab is to develop an open-ended full-stack project using the learned frontend and backend technologies. Specifically, the task is to build a simplified version of Amazon (Nova E-Commerce), a full-stack e-commerce web application. This encompasses implementing product listings, adding products, updating stock, removing listings, user authentication, search/filtering, and a complete shopping cart checkout flow.
+
+\section{Introduction}
+Amazon.com serves as an excellent reference for a full-stack application as it demonstrates nearly every core concept in one place. In this lab, we build a platform named "Nova," which allows sellers (Admins) to list products and customers to browse, search, add items to a cart, and place orders. The application is built using the MERN stack (MongoDB, Express.js, React, Node.js).
+
+\subsection{Core Features Implemented}
+\begin{itemize}
+    \item \textbf{User Authentication:} Secure registration and login using JWT (JSON Web Tokens) and bcrypt for password hashing.
+    \item \textbf{Product Management:} Full CRUD operations for products restricted to admin users.
+    \item \textbf{Shopping Cart:} Context API-based cart management allowing users to add, update, and remove items.
+    \item \textbf{Order Processing:} Checkout flow mapping cart items to order history, along with stock decrementing.
+    \item \textbf{Search \& Filtering:} Frontend UI for browsing products by category and search terms.
+    \item \textbf{UI/UX Enhancements:} Implementation of modern design elements like glassmorphism, star ratings, and responsive layouts using Tailwind CSS.
+\end{itemize}
+
+% =========================================================
+% SYSTEM ARCHITECTURE
+% =========================================================
+\section{System Architecture}
+The application follows a standard three-tier architecture:
+
+\begin{enumerate}
+    \item \textbf{Frontend (Client):} Built with React (using Vite), TypeScript, and Tailwind CSS. State management is handled via React Context API (AuthContext, CartContext) and React Query for API data fetching.
+    \item \textbf{Backend (Server):} Developed using Node.js and Express.js, featuring RESTful API routes, validation middlewares, and error handling.
+    \item \textbf{Database:} MongoDB with Mongoose ODM for defining schemas (User, Product, Order).
+\end{enumerate}
+
+% =========================================================
+% IMPLEMENTATION DETAILS
+% =========================================================
+\section{Implementation Details}
+Below are key aspects of the implementation required to fulfill the lab requirements.
+
+\subsection{Database Schema and Models}
+The MongoDB schema defines three main entities. The User schema incorporates roles to distinguish between regular customers and administrators.
+
+\begin{lstlisting}[language=JavaScript]
+// server/models/User.js snippet
+const userSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true, select: false },
+    role: { type: String, enum: ["customer", "admin"], default: "customer" },
+});
+\end{lstlisting}
+
+\subsection{Authentication and Authorization}
+Protected routes and admin-only routes are secured via JWT middleware.
+
+\begin{lstlisting}[language=JavaScript]
+// server/middleware/authMiddleware.js snippet
+export const adminOnly = (req, res, next) => {
+  if (req.user && req.user.role === "admin") {
+    next();
+  } else {
+    res.status(403);
+    throw new Error("Not authorized as an admin");
+  }
+};
+\end{lstlisting}
+
+% =========================================================
+% APPLICATION SCREENSHOTS
+% =========================================================
+\section{Application Screenshots \& Workflows}
+The following sections showcase the completed UI and functionality of the Nova E-Commerce platform.
+
+\subsection{Homepage \& Hero Section}
+The landing page features a dynamic hero section and navigation bar.
+
+\begin{figure}[H]
+    \centering
+    \imgplaceholder{8cm}{15cm}
+    \caption{Homepage Hero Section showing navigation, search, and dynamic layout}
+\end{figure}
+
+\subsection{Product Categories \& Grid}
+The product listing includes curated categories and individual product cards with images, prices, and star ratings.
+
+\begin{figure}[H]
+    \centering
+    \imgplaceholder{8cm}{15cm}
+    \caption{Categories and Product Grid with filters and Add to Cart functionality}
+\end{figure}
+
+\subsection{User Authentication}
+Registration and Login forms ensure secure user access.
+
+\begin{figure}[H]
+    \centering
+    \imgplaceholder{8cm}{15cm}
+    \caption{Registration page with password confirmation validation}
+\end{figure}
+
+\subsection{Shopping Cart \& Checkout}
+The cart interface allows quantity adjustments and initiates the order placement process.
+
+\begin{figure}[H]
+    \centering
+    \imgplaceholder{8cm}{15cm}
+    \caption{Shopping Cart Interface}
+\end{figure}
+
+\subsection{Admin Dashboard}
+The administrative interface allows authorized users to manage products and update order statuses.
+
+\begin{figure}[H]
+    \centering
+    \imgplaceholder{8cm}{15cm}
+    \caption{Admin Dashboard: Products and Orders Management Tabs}
+\end{figure}
+
+\section{Conclusion}
+In Lab 13, I successfully engineered a full-stack e-commerce application from the ground up, simulating a real-world platform like Amazon. I integrated a robust React frontend with an Express backend, ensuring secure data persistence via MongoDB. This project solidified my understanding of RESTful API design, state management, JWT authentication, and creating responsive, professional user interfaces.
+
+\end{document}
