@@ -1,5 +1,6 @@
 import heroImg from "@/assets/hero.jpg";
 import { ArrowRight, Play } from "lucide-react";
+import { formatCurrency } from "@/lib/currency";
 
 export const Hero = () => {
   return (
@@ -63,7 +64,7 @@ export const Hero = () => {
             <div className="absolute top-8 left-8 glass-strong rounded-2xl px-4 py-3 animate-float" style={{ animationDelay: "-2s" }}>
               <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Featured</div>
               <div className="font-display font-bold">Holo Jacket</div>
-              <div className="text-xs text-accent font-semibold">$189</div>
+              <div className="text-xs text-accent font-semibold">{formatCurrency(189)}</div>
             </div>
             <div className="absolute bottom-8 right-8 glass-strong rounded-full pl-1 pr-4 py-1 flex items-center gap-2 animate-float" style={{ animationDelay: "-4s" }}>
               <div className="w-8 h-8 rounded-full bg-gradient-hero flex items-center justify-center text-xs font-bold">+</div>

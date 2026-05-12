@@ -1,5 +1,14 @@
+import { formatCurrency } from "@/lib/currency";
+
 export const Marquee = () => {
-  const items = ["NEW DROP 07", "FREE SHIPPING OVER $80", "STUDENT 15% OFF", "AR TRY-ON", "LIMITED EDITION", "MADE FOR GEN-Z"];
+  const items = [
+    "NEW DROP 07",
+    `FREE SHIPPING OVER ${formatCurrency(80)}`,
+    "STUDENT 15% OFF",
+    "AR TRY-ON",
+    "LIMITED EDITION",
+    "MADE FOR GEN-Z",
+  ];
   const row = [...items, ...items];
   return (
     <div className="relative py-6 border-y border-border/50 bg-gradient-soft overflow-hidden">

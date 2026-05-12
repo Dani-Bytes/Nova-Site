@@ -1,4 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import { PRODUCT_CATEGORIES } from "@/lib/constants";
 
 const cats = [
   { name: "Streetwear", count: "248 items", grad: "from-primary to-accent" },
@@ -10,6 +12,22 @@ const cats = [
 ];
 
 export const Categories = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleSelect = (category: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (!category) {
+      next.delete("category");
+    } else {
+      if (!PRODUCT_CATEGORIES.includes(category)) {
+        return;
+      }
+      next.set("category", category);
+    }
+    setSearchParams(next, { replace: true });
+    window.location.hash = "shop";
+  };
+
   return (
     <section className="py-20 relative">
       <div className="container mb-10 flex items-end justify-between">
@@ -19,16 +37,19 @@ export const Categories = () => {
             Pick your <span className="gradient-text">aesthetic</span>
           </h2>
         </div>
-        <a href="#" className="hidden md:inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <button
+          onClick={() => handleSelect("")}
+          className="hidden md:inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        >
           See all <ArrowUpRight className="w-4 h-4" />
-        </a>
+        </button>
       </div>
       <div className="flex gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory px-6 md:px-[max(1.5rem,calc((100vw-1400px)/2+1.5rem))] pb-6">
         {cats.map((c, i) => (
-          <a
+          <button
             key={c.name}
-            href="#"
-            className="snap-start shrink-0 w-72 h-96 relative rounded-3xl overflow-hidden glass group cursor-pointer animate-fade-up"
+            onClick={() => handleSelect(c.name)}
+            className="snap-start shrink-0 w-72 h-96 relative rounded-3xl overflow-hidden glass group cursor-pointer animate-fade-up text-left"
             style={{ animationDelay: `${i * 70}ms` }}
           >
             <div className={`absolute inset-0 bg-gradient-to-br ${c.grad} opacity-80 group-hover:opacity-100 transition`} />
@@ -44,7 +65,7 @@ export const Categories = () => {
                 <h3 className="font-display font-bold text-4xl mt-2 tracking-tight">{c.name}</h3>
               </div>
             </div>
-          </a>
+          </button>
         ))}
       </div>
     </section>
