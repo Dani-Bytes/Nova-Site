@@ -1,4 +1,4 @@
-import { ApiError } from "../utils/ApiError.js";
+import { ApiError } from "../utils/apiError.js";
 
 const isEmail = (value) => /\S+@\S+\.\S+/.test(value);
 

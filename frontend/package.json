@@ -1,6 +1,8 @@
 {
   "name": "vite_react_shadcn_ts",
   "private": true,
+  "homepage": "https://dani-bytes.github.io/Nova-Site/",
+  "repository": "https://github.com/Dani-Bytes/Nova-Site.git",
   "version": "0.0.0",
   "type": "module",
 "scripts": {
@@ -12,7 +14,7 @@
   "test": "vitest run",
   "test:watch": "vitest",
   "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
+  "deploy": "gh-pages -d dist -r https://github.com/Dani-Bytes/Nova-Site.git"
 },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
