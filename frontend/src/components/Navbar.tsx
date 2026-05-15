@@ -66,13 +66,13 @@ export const Navbar = () => {
         <ul className="hidden md:flex items-center gap-1">
           {links.map((label) => (
             <li key={label}>
-              <a
-                href="/#shop"
+              <Link
+                to={{ pathname: "/", hash: "#shop" }}
                 className="relative px-4 py-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors group"
               >
                 {label}
                 <span className="absolute left-4 right-4 -bottom-0.5 h-px bg-gradient-hero scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              </a>
+              </Link>
             </li>
           ))}
           {user ? (
